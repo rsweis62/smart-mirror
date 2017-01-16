@@ -1,0 +1,30 @@
+{
+    "schema": {
+        "cta": {
+            "type": "object",
+            "title": "CTA",
+            "properties": {
+                "stops": {
+                    "type": "tabarray",
+                    "title": "Bus stops",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "refreshInterval": {
+                    "type": "integer",
+                    "title": "Refresh Interval for Cta (minutes)",
+                    "default": 1440
+                }
+            }
+        }
+    },
+    "form": [
+        {
+            "type": "fieldset",
+            "key": "cta",
+            "expandable": true,
+            "order":0
+        }
+    ]
+}

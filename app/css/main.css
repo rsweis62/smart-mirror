@@ -269,6 +269,13 @@ ul.calendar {
     margin-right: 10px;
 }
 
+.cta-times {
+    font-size: 32px;
+    text-align: left;
+    margin-top: 20px;
+    margin-right: 10px;
+}
+
 .time-to {
     font-weight: bold;
 }

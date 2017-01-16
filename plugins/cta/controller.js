@@ -3,6 +3,12 @@ function CTA($scope, $http, $interval, ngXml2json) {
     getStopData()
     $interval(getStopData, config.cta.refreshInterval * 60000 || 7200000)
 
+    function setApproaching(times) {
+        if (times.pu == 'APPROACHING') {
+            times.pt = '';
+        }
+    }
+
     function getStopData() {
         $scope.stops = [];
 
@@ -15,20 +21,23 @@ function CTA($scope, $http, $interval, ngXml2json) {
                 })
                 .then(function (response) {
                     if (response != "") {
-                        var times = ngXml2json.parser(response.data).stop.pre;
-                        if(times.length){
-                            for( i=0; i < times.length; i++ ) {
-                                var time = times[i];
-                                if(time.pu == 'APPROACHING'){
-                                    time.pt = '';
-                                }
-                                $scope.stops.push(time);
-                            }
+                        var stopData = ngXml2json.parser(response.data).stop;
+                        if(stopData.nopredictionmessage){
+                            $scope.noTimes = true;
+                            $scope.nopredictionmessage = stopData.nopredictionmessage;
                         } else {
-                            if(times.pu == 'APPROACHING'){
-                                times.pt = '';
+                            $scope.noTimes = false;
+                            var times = stopData.pre;
+                            if(times.length){
+                                for( i=0; i < times.length; i++ ) {
+                                    var time = times[i];
+                                    setApproaching(time);
+                                    $scope.stops.push(time);
+                                }
+                            } else {
+                                setApproaching(times);
+                                $scope.stops.push(times);
                             }
-                            $scope.stops.push(times);
                         }
                     }
                 })

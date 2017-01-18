@@ -18,26 +18,29 @@
         $scope.config = config;
 
         // Set up our Focus
-        $rootScope.$on('focus', function(targetScope, newFocus, oldFocus){
+        $rootScope.$on('focus', function(targetScope, newFocus){
             $scope.focus = newFocus;
         })
 
         Focus.change("default");
 
         //set lang
-        moment.locale(
-            (typeof config.general.language !== 'undefined') ? config.general.language : 'en-US',
-            {
-                calendar: {
-                    lastWeek: '[Last] dddd',
-                    lastDay: '[Yesterday]',
-                    sameDay: '[Today]',
-                    nextDay: '[Tomorrow]',
-                    nextWeek: 'dddd',
-                    sameElse: 'L'
+        if (config.general.language.substr(0, 2) == 'en') {
+            moment.locale(config.general.language,
+                {
+                    calendar: {
+                        lastWeek: '[Last] dddd',
+                        lastDay: '[Yesterday]',
+                        sameDay: '[Today]',
+                        nextDay: '[Tomorrow]',
+                        nextWeek: 'dddd',
+                        sameElse: 'L'
+                    }
                 }
-            }
-        );
+            )
+        } else {
+                moment.locale(config.general.language)
+        }
         //Initialize the speech service
 
         var resetCommandTimeout;
@@ -90,7 +93,7 @@
         _this.init = function () {
             AutoSleepService.startAutoSleepTimer();
 
-            var tick = $interval(updateTime, 1000);
+            $interval(updateTime, 1000);
             updateTime();
             restCommand();
 
@@ -116,7 +119,7 @@
             });
 
             // Check the time
-            SpeechService.addCommand('time_show', function (task) {
+            SpeechService.addCommand('time_show', function () {
                 console.debug("It is", moment().format('h:mm:ss a'));
             });
 

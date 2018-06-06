@@ -1,18 +1,19 @@
 {
   "name": "smart-mirror",
-  "version": "0.0.10",
+  "version": "0.0.17",
   "description": "The fairest of them all",
   "main": "main.js",
   "scripts": {
     "install": "bower install",
     "start": "electron main.js ",
-    "microphone-debug": "electron scripts/microphone-debug/main.js",
     "train-model": "electron scripts/train-model.js",
     "sonus": "node sonus.js",
     "motion": "sudo node motion.js",
+    "enable-motion": "npm install johnny-five raspi-io",
     "update": "git pull && npm install",
     "wiredep": "wiredep -s index.html",
-    "test": "eslint ."
+    "test": "eslint . --ignore-path .gitignore",
+    "test-fix": "eslint . --ignore-path .gitignore --fix"
   },
   "repository": {
     "type": "git",
@@ -33,18 +34,21 @@
   "devDependencies": {
     "angular-i18n": "^1.5.5",
     "bower": "^1.7.9",
-    "electron": "^1.4.4",
+    "electron": "<1.8.0",
     "eslint": "^3.13.1",
     "wiredep-cli": "^0.1.0"
   },
   "dependencies": {
+    "angular-moment": "^1.0.1",
     "annyang": "^2.6.0",
     "electron-json-storage": "2.0.0",
     "express": "^4.14.0",
     "fitbit-oauth2": "0.0.1",
+    "humanize-duration": "^3.10.1",
     "hyperion-client": "1.0.3",
+    "moment": "^2.17.1",
     "socket.io": "^1.6.0",
-    "sonus": "^0.1.4"
+    "sonus": "^0.1.9"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
@@ -54,14 +58,18 @@
       "browser": true
     },
     "rules": {
+      "indent": [
+        2,
+        "tab"
+      ],
       "no-console": 0
     },
     "globals": {
-        "angular": false,
-        "annyang": false,
-        "moment": false,
-        "config": false,
-        "RRule": false
+      "angular": false,
+      "annyang": false,
+      "moment": false,
+      "config": false,
+      "RRule": false
     }
   }
 }

@@ -11,11 +11,11 @@
     try{
       config = require('./config.json')
     } catch (e){
-      config = require('./config.default.json')
+      config = require('./remote/.config.default.json')
     }
     // Error logging
     window.onerror = function (errorMsg, url, lineNumber) {
-        fs.appendFileSync('./smart-mirror.log', '['+ new Date().toString() + '] ' 
+        fs.appendFileSync('./smart-mirror.log', '['+ new Date().toString() + '] '
         + errorMsg + '| Script: ' + url + ' Line: ' + lineNumber + '\n');
     }
   </script>
@@ -42,6 +42,7 @@
       <div ng-include="'plugins/traffic/index.html'"></div>
       <div ng-include="'plugins/stock/index.html'"></div>
       <div ng-include="'plugins/tvshows/index.html'"></div>
+      <div ng-include="'plugins/ha-display/index.html'"></div>
     </div>
   </div>
   <div class="container" ng-class="(listening == true)?'listening':'not-listening'">
@@ -52,10 +53,12 @@
       <div ng-include="'plugins/map/index.html'"></div>
       <div ng-include="'plugins/xkcd/index.html'"></div>
       <div ng-include="'plugins/dilbert/index.html'"></div>
+      <div ng-include="'plugins/commitstrip/index.html'"></div>
       <div ng-include="'plugins/search/index.html'"></div>
       <div ng-include="'plugins/giphy/index.html'"></div>
       <div ng-include="'plugins/reminder/index.html'"></div>
       <div ng-include="'plugins/timer/index.html'"></div>
+      <div ng-include="'plugins/todoist/index.html'"></div>
     </div>
     <div class="bottom-center">
       <!-- Command list -->
@@ -66,7 +69,7 @@
       <div class="partial-result" ng-bind="partialResult" ng-hide="speechError"></div>
     </div>
     <div class="bottom-left">
-      <div ng-include="'plugins/fitbit/index.html'" ng-if="fitbit"></div>
+      <div ng-include="'plugins/fitbit/index.html'" ng-if="config.fitbit.creds"></div>
       <div ng-include="'plugins/scrobbler/index.html'"></div>
     </div>
     <div class="bottom-right">
@@ -78,7 +81,7 @@
   <div ng-controller="AutoSleep"></div>
   <div ng-show="focus == 'sleep'" class="sleep-cover fade"></div>
 
-  <!-- Smart Mirror JS 
+  <!-- Smart Mirror JS
   ==========================================================================
   The good stuff. -->
 
@@ -111,6 +114,7 @@
   <script src="plugins/autosleep/service.js"></script>
   <script src="plugins/scrobbler/service.js"></script>
   <script src="plugins/timer/service.js"></script>
+  <script src="plugins/todoist/service.js"></script>
 
   <!-- Controllers -->
   <script src="app/js/controller.js"></script>
@@ -118,6 +122,7 @@
   <script src="plugins/search/controller.js"></script>
   <script src="plugins/xkcd/controller.js"></script>
   <script src="plugins/dilbert/controller.js"></script>
+  <script src="plugins/commitstrip/controller.js"></script>
   <script src="plugins/map/controller.js"></script>
   <script src="plugins/giphy/controller.js"></script>
   <script src="plugins/timer/controller.js"></script>
@@ -135,6 +140,8 @@
   <script src="plugins/calendar/controller.js"></script>
   <script src="plugins/remote/controller.js"></script>
   <script src="plugins/maker/controller.js"></script>
+  <script src="plugins/todoist/controller.js"></script>
+  <script src="plugins/ha-display/controller.js"></script>
 
 </body>
 

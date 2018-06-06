@@ -136,6 +136,14 @@ dt {
     margin-right: auto;
 }
 
+span.command-prev {
+    float:left;
+}
+
+span.command-next {
+    float:right;
+}
+
 ul.calendar {
     list-style: none;
     font-size: 22px;
@@ -227,13 +235,18 @@ ul.calendar {
     display: none;
 }
 
+.stock, .tvshows, .hadisplay, .traffic {
+    font-family: 'Open Sans', sans-serif;
+    font-size: small;
+}
+
 .fitbit {
     height: 100%;
 }
 
 .fitbit-title {
     margin-right: 10px;
-    font-size: 24px;
+    font-size: 28px;
 }
 
 .fitbit-subtitle {
@@ -258,6 +271,23 @@ ul.calendar {
     width: 450px;
 }
 
+.fitbit-goals {
+    float: right;
+    width: 60%;
+}
+
+.fitbit-progress-bar {
+    position: relative;
+    width: 50%;
+    height: 5px;
+    background-color: grey;
+}
+
+.fitbit-progress {
+    position: absolute;
+    height: 100%;
+}
+
 .playing-track img {
     float: left;
     margin-right: 5px;
@@ -278,6 +308,13 @@ ul.calendar {
 
 .time-to {
     font-weight: bold;
+
+.stock-change-positive {
+    color: green;
+}
+
+.stock-change-negative {
+    color: red;
 }
 
 @keyframes reduce-dashoffset {
@@ -352,11 +389,15 @@ ul.calendar {
     height: 1080px;
 }
 
-.reminders-container {
+.reminders-container, .todoist-container {
     width: 250px;
     text-align: left;
     margin-left: auto;
     margin-right: auto;
+}
+
+.todoist {
+    padding: 10px 10px 10px 80px;
 }
 
 .contents-box {
@@ -497,13 +538,17 @@ ul.calendar {
     max-width: 100%;
 }
 
+.commit-strip {
+    max-width: 100%;
+}
+
 .qrImage {
     -webkit-filter: invert(100%);
     max-width: 100%;
 }
 
 .news {
-    height: 75px; 
+    height: 75px;
     margin-bottom: 5px;
 }
 

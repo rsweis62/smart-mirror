@@ -1,13 +1,15 @@
 <div class="cta" ng-controller="CTA">
-    <h3>Marine Drive & Buena (Southbound)</h3>
     <div class="cta-times time-to" ng-show="noTimes">
         <span><i class="fa fa-rss fade" style="margin-right: 5px";></i></span>
         <span style="font-weight: bold" ng-bind="nopredictionmessage"></span>
     </div>
 
-    <div class="cta-times time-to" ng-hide="noTimes" ng-repeat="stop in stops track by $index">
-        <span><i class="fa fa-rss fade" style="margin-right: 5px";></i></span>
-        <span fade><span style="font-weight: bold" ng-bind="stop.rn"></span> –
-        <span>{{stop.pt}} {{stop.pu}}</span></span>
+    <div class="cta-times time-to" ng-repeat="(key, value) in stops track by $index">
+        <span><i class="fa fa-rss fade" style="margin-right: 5px; color: red";>{{value[0].stopName}}</i></span>
+        <div class="cta-times time-to" ng-hide="noTimes" ng-repeat="time in value">
+            <span fade>
+                <span> - {{time.arrivalTime}}</span>
+            </span>
+        </div>
     </div>
 </div>

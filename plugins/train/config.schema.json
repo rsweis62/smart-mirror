@@ -1,19 +1,19 @@
 {
     "schema": {
-        "cta": {
+        "train": {
             "type": "object",
-            "title": "CTA",
+            "title": "TRAIN",
             "properties": {
                 "stops": {
                     "type": "tabarray",
-                    "title": "Bus stops",
+                    "title": "Train stops",
                     "items": {
                         "type": "string"
                     }
                 },
                 "refreshInterval": {
                     "type": "integer",
-                    "title": "Refresh Interval for Cta (minutes)",
+                    "title": "Refresh Interval for Cta (sec)",
                     "default": 60
                 }
             }
@@ -22,7 +22,7 @@
     "form": [
         {
             "type": "fieldset",
-            "key": "cta",
+            "key": "train",
             "expandable": true,
             "order":0
         }

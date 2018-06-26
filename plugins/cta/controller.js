@@ -1,49 +1,51 @@
-function CTA($scope, $http, $interval, ngXml2json) {
+/* eslint-disable indent */
+function CTA($scope, $http, $interval) {
 
-    getStopData()
-    $interval(getStopData, config.cta.refreshInterval * 60000 || 7200000)
+  getStopData()
+  $interval(getStopData, config.cta.refreshInterval * 1000 || 60000)
 
-    function setApproaching(times) {
-        if (times.pu == 'APPROACHING') {
-            times.pt = '';
-        }
-    }
+  function getStopData() {
+    $scope.stops = [];
 
-    function getStopData() {
-        $scope.stops = [];
+    // for each show in config, create http request
+    angular.forEach(config.cta.stops, function (stopId) {
+      $http.get('http://www.ctabustracker.com/bustime/api/v2/getpredictions?key=t5nqVPAR8gT6aKnj9ekksZ8Cu&format=json&stpid=' + stopId)
+        .catch(function () { // if no response for a show add blank response, log error
+          console.log("No response for cta: " + stopId);
+          return "";
+        })
+        .then(function (response) {
+          if (response !== "") {
+            const busData = response.data['bustime-response'];
+            if (busData.error) {
+              $scope.noTimes = true;
+              $scope.nopredictionmessage = 'No times available...';
+            } else {
+              $scope.noTimes = false;
+              const stopTimes = busData.prd
+              for (let i = 0; i < stopTimes.length; i++) {
+                const time = stopTimes[i];
+                const minutes = time.prdctdn;
+                const mappedData = {
+                  stopId: time.stpid,
+                  stopName: time.rt + " - " + time.stpnm + " " + time.rtdir,
+                  stopLine: time.rt,
+                  arrivalTime: minutes === 'DUE' ? minutes : minutes + ' minutes'
+                }
 
-        // for each show in config, create http request
-        angular.forEach(config.cta.stops, function (stopId) {
-            $http.get('http://www.ctabustracker.com/bustime/eta/getStopPredictionsETA.jsp?route=all&stop=' + stopId)
-                .catch(function () { // if no response for a show add blank response, log error
-                    console.log("No response for show: " + stopId);
-                    return "";
-                })
-                .then(function (response) {
-                    if (response != "") {
-                        var stopData = ngXml2json.parser(response.data).stop;
-                        if(stopData.nopredictionmessage){
-                            $scope.noTimes = true;
-                            $scope.nopredictionmessage = stopData.nopredictionmessage;
-                        } else {
-                            $scope.noTimes = false;
-                            var times = stopData.pre;
-                            if(times.length){
-                                for( i=0; i < times.length; i++ ) {
-                                    var time = times[i];
-                                    setApproaching(time);
-                                    $scope.stops.push(time);
-                                }
-                            } else {
-                                setApproaching(times);
-                                $scope.stops.push(times);
-                            }
-                        }
-                    }
-                })
-        });
-    }
+                if($scope.stops[mappedData.stopId]) {
+                  $scope.stops[mappedData.stopId].push(mappedData);
+								} else {
+                  $scope.stops[mappedData.stopId] = [mappedData];
+                }
+              }
+              $scope.stops = $scope.stops.filter(value => Object.keys(value).length !== 0);
+            }
+          }
+        })
+    });
+  }
 }
 
 angular.module('SmartMirror')
-    .controller('CTA', CTA);
+  .controller('CTA', CTA);

@@ -1,0 +1,15 @@
+<div class="cta" ng-controller="TRAIN">
+    <div class="cta-times time-to" ng-show="noTimes">
+        <span><i class="fa fa-rss fade" style="margin-right: 5px";></i></span>
+        <span style="font-weight: bold" ng-bind="nopredictionmessage"></span>
+    </div>
+
+    <div class="train-times time-to" ng-hide="noTimes" ng-repeat="stop in stops track by $index">
+        <span><i class="fa fa-rss fade" style="margin-right: 5px";></i></span>
+        <span fade>
+            <span style="font-weight: bold; color: {{stop.stopLine}}">
+                {{stop.stopName}} {{stop.stopDirection}} – </span>
+            <span>{{stop.arrivalTime}}</span>
+        </span>
+    </div>
+</div>

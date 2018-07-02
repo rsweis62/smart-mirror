@@ -4,18 +4,14 @@
             "type": "object",
             "title": "Spotify",
             "properties": {
-                "clientId": {
-                    "type": "string",
-                    "title": "Spotify client id"
-                },
-                "clientSecret": {
-                    "type": "string",
-                    "title": "Spotify client secret"
+                "spotifyToken": {
+                  "type": "string",
+                  "title": "Access token"
                 },
                 "refreshInterval": {
                     "type": "integer",
                     "title": "Refresh Interval for Spotify (sec)",
-                    "default": 60
+                    "default": 10
                 }
             }
         }
@@ -24,8 +20,14 @@
         {
             "type": "fieldset",
             "key": "spotify",
-            "expandable": true,
-            "order":0
+            "expandable": false,
+            "order":0,
+            "items": [
+              {
+                "type": "help",
+                "helpvalue": "<a href='https://accounts.spotify.com/authorize?client_id=40b985d4a8834d25b4949272d6a41e2a&redirect_uri=http://192.168.1.159:8080&scope=user-read-currently-playing&response_type=token&state=123'>Log in</a>"
+              }
+            ]
         }
     ]
 }

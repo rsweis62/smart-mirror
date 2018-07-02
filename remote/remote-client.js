@@ -133,6 +133,7 @@ $(function () {
 	// config socket events
 	socket.on('json', function (data) {
 		data.configJSON.value = $.extend({}, data.configDefault, data.config)
+		data.configJSON.value.spotify.spotifyToken = localStorage.getItem('spotifyToken')
 		console.log(data);
 		data.configJSON.form.push({ "type": "button", "title": "Submit", "order": 10000 })
 		console.log(data);
@@ -233,7 +234,15 @@ $(function () {
 		})
 	}
 
+	function setSpotifyToken() {
+		var href = window.location.href
+		var hash = href.slice(href.indexOf('#') + 1).split('&')[0]
+		if(hash.search('access_token') === 0) localStorage.setItem('spotifyToken', hash.replace('access_token=', ''));
+		socket.emit('setSpotifyToken')
+	}
+
 	function index_init() {
+		setSpotifyToken()
 		if (isIosDevice()) {
 			$speak.addClass('hidden')
 			$nospeak.removeClass('hidden')
@@ -258,8 +267,5 @@ $(function () {
 			hideElm(element);
 		}, timeOutMillis)
 	}
-
-
-
 
 })

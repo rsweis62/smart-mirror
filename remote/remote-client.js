@@ -130,10 +130,19 @@ $(function () {
 		})
 	})
 
+	function setSpotifyUrl(config) {
+		config.value.spotify.spotifyCode = localStorage.getItem('spotifyCode');
+		config.value.spotify.redirectUrl = 'http://' + window.location.host;
+		let form = config.form.find(function (obj) { return obj.key === 'spotify'; });
+		form.items[0].helpvalue = form.items[0].helpvalue
+      .replace('CLIENT_ID', config.value.spotify.clientId)
+      .replace('REDIRECT_URL', config.value.spotify.redirectUrl);
+	}
+
 	// config socket events
 	socket.on('json', function (data) {
 		data.configJSON.value = $.extend({}, data.configDefault, data.config)
-		data.configJSON.value.spotify.spotifyToken = localStorage.getItem('spotifyToken')
+		setSpotifyUrl(data.configJSON)
 		console.log(data);
 		data.configJSON.form.push({ "type": "button", "title": "Submit", "order": 10000 })
 		console.log(data);
@@ -236,9 +245,8 @@ $(function () {
 
 	function setSpotifyToken() {
 		var href = window.location.href
-		var hash = href.slice(href.indexOf('#') + 1).split('&')[0]
-		if(hash.search('access_token') === 0) localStorage.setItem('spotifyToken', hash.replace('access_token=', ''));
-		socket.emit('setSpotifyToken')
+		var hash = href.slice(href.indexOf('?') + 1).split('&')[0]
+		if(hash.search('code') === 0) localStorage.setItem('spotifyCode', hash.replace('code=', ''));
 	}
 
 	function index_init() {

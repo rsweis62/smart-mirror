@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 function SPOTIFY($scope, $http, $interval) {
 
-  getSongData();
+  getTokenByCode();
 
   $interval(getSongData, config.spotify.refreshInterval * 1000 || 60000)
 
@@ -11,12 +11,69 @@ function SPOTIFY($scope, $http, $interval) {
     return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
   }
 
+  function getTokenByCode() {
+    let spotifyToken = localStorage.getItem('spotifyToken');
+    let refToken = localStorage.getItem('spotifyRefreshToken');
+    if(refToken === null || refToken === '') {
+      let params = 'grant_type=authorization_code&redirect_uri=' + config.spotify.redirectUrl + '&code=' + config.spotify.spotifyCode;
+      let req = {
+        method: 'POST',
+        url: 'https://accounts.spotify.com/api/token?' + params,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Basic ' + btoa(config.spotify.clientId + ':' + config.spotify.clientSecret)
+        },
+        data: params
+      }
+      $http(req).catch(function (e) {
+        console.log("Token error: " + e);
+        return "";
+      })
+        .then(function successCallback(response) {
+          if (response !== "") {
+            $scope.spotifyToken = response.data.access_token;
+            $scope.spotifyRefreshToken = response.data.refresh_token;
+            localStorage.setItem('spotifyToken', $scope.spotifyToken)
+            localStorage.setItem('spotifyRefreshToken', $scope.spotifyRefreshToken)
+            getSongData();
+          }
+        });
+    } else {
+      $scope.spotifyToken = spotifyToken;
+      $scope.spotifyRefreshToken = refToken;
+      getSongData();
+    }
+  }
+
+  function getTokenByRefresh() {
+    let params = 'grant_type=refresh_token&refresh_token=' + $scope.spotifyRefreshToken;
+    let req = {
+      method: 'POST',
+      url: 'https://accounts.spotify.com/api/token?' + params,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Basic ' + btoa(config.spotify.clientId + ':' + config.spotify.clientSecret)
+      },
+      data: params
+    }
+    $http(req).catch(function (e) {
+      console.log("Token error: " + e);
+      return "";
+    })
+      .then(function successCallback(response) {
+        if (response !== "") {
+          $scope.spotifyToken = response.data.access_token;
+          $scope.spotifyRefreshToken = response.data.refresh_token;
+        }
+      });
+  }
+
   function getSongData() {
-    $http.get('https://api.spotify.com/v1/me/player/currently-playing', {
-      headers: {'Authorization': 'Bearer ' + config.spotify.spotifyToken}
-    }).catch(function (e) {
+    let config = { headers: { 'Authorization': 'Bearer ' + $scope.spotifyToken } };
+    $http.get('https://api.spotify.com/v1/me/player/currently-playing', config)
+    .catch(function (e) {
       console.log("No response for spotify: "+ e);
-      // getToken();
+      getTokenByRefresh();
       return "";
     })
       .then(function successCallback(response) {

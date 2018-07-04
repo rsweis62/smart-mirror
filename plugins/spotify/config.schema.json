@@ -4,9 +4,21 @@
             "type": "object",
             "title": "Spotify",
             "properties": {
-                "spotifyToken": {
+                "spotifyCode": {
+                    "type": "string",
+                    "title": "Access token"
+                },
+                "clientId": {
+                    "type": "string",
+                    "title": "Client id"
+                },
+                "clientSecret": {
+                    "type": "string",
+                    "title": "Client secret"
+                },
+                "redirectUrl": {
                   "type": "string",
-                  "title": "Access token"
+                  "title": "Redirect url"
                 },
                 "refreshInterval": {
                     "type": "integer",
@@ -25,7 +37,7 @@
             "items": [
               {
                 "type": "help",
-                "helpvalue": "<a href='https://accounts.spotify.com/authorize?client_id=40b985d4a8834d25b4949272d6a41e2a&redirect_uri=http://192.168.1.159:8080&scope=user-read-currently-playing&response_type=token&state=123'>Log in</a>"
+                "helpvalue": "<a href='https://accounts.spotify.com/authorize?client_id=CLIENT_ID&redirect_uri=REDIRECT_URL&scope=user-read-currently-playing&response_type=code&state=123'>Log in</a>"
               }
             ]
         }

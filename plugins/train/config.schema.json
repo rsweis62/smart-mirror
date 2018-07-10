@@ -2,7 +2,7 @@
     "schema": {
         "train": {
             "type": "object",
-            "title": "TRAIN",
+            "title": "Train",
             "properties": {
                 "stops": {
                     "type": "tabarray",

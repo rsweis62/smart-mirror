@@ -1,9 +1,11 @@
 /* eslint-disable indent */
 function SPOTIFY($scope, $http, $interval) {
 
-  getTokenByCode();
+  if(config.spotify){
+    getTokenByCode();
+    $interval(getTokenByCode, config.spotify.refreshInterval * 1000 || 60000)
+  }
 
-  $interval(getSongData, config.spotify.refreshInterval * 1000 || 60000)
 
   function millisToMinutesAndSeconds(millis) {
     let minutes = Math.floor(millis / 60000);

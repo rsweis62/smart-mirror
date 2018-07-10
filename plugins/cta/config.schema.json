@@ -2,7 +2,7 @@
     "schema": {
         "cta": {
             "type": "object",
-            "title": "CTA",
+            "title": "Cta",
             "properties": {
                 "stops": {
                     "type": "tabarray",

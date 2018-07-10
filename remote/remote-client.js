@@ -131,12 +131,14 @@ $(function () {
 	})
 
 	function setSpotifyUrl(config) {
-		config.value.spotify.spotifyCode = localStorage.getItem('spotifyCode');
-		config.value.spotify.redirectUrl = 'http://' + window.location.host;
-		let form = config.form.find(function (obj) { return obj.key === 'spotify'; });
-		form.items[0].helpvalue = form.items[0].helpvalue
-      .replace('CLIENT_ID', config.value.spotify.clientId)
-      .replace('REDIRECT_URL', config.value.spotify.redirectUrl);
+		if(config.value.spotify){
+            config.value.spotify.spotifyCode = localStorage.getItem('spotifyCode');
+            config.value.spotify.redirectUrl = 'http://' + window.location.host;
+            let form = config.form.find(function (obj) { return obj.key === 'spotify'; });
+            form.items[0].helpvalue = form.items[0].helpvalue
+            .replace('CLIENT_ID', config.value.spotify.clientId)
+            .replace('REDIRECT_URL', config.value.spotify.redirectUrl);
+		}
 	}
 
 	// config socket events
@@ -144,7 +146,7 @@ $(function () {
 		data.configJSON.value = $.extend({}, data.configDefault, data.config)
 		setSpotifyUrl(data.configJSON)
 		console.log(data);
-		data.configJSON.form.push({ "type": "button", "title": "Submit", "order": 10000 })
+		data.configJSON.form.push({ "type": "submit", "title": "Submit", "order": 10000 })
 		console.log(data);
 
 		try {

@@ -1,8 +1,10 @@
 /* eslint-disable indent */
 function TRAIN($scope, $http, $interval) {
 
-  getStopData()
-  $interval(getStopData, config.train.refreshInterval * 1000 || 60000)
+  if(config.train){
+      getStopData()
+      $interval(getStopData, config.train.refreshInterval * 1000 || 60000)
+   }
 
   function getStopData() {
     $scope.stops = [];

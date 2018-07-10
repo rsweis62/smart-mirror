@@ -1,8 +1,10 @@
 /* eslint-disable indent */
 function CTA($scope, $http, $interval) {
 
-  getStopData()
-  $interval(getStopData, config.cta.refreshInterval * 1000 || 60000)
+  if(config.cta){
+    getStopData()
+    $interval(getStopData, config.cta.refreshInterval * 1000 || 60000)
+  }
 
   function getStopData() {
     $scope.stops = [];

@@ -35,10 +35,10 @@ function CTA($scope, $http, $interval) {
                   arrivalTime: minutes === 'DUE' ? minutes : minutes + ' minutes'
                 }
 
-                if($scope.stops[mappedData.stopId]) {
-                  $scope.stops[mappedData.stopId].push(mappedData);
-								} else {
-                  $scope.stops[mappedData.stopId] = [mappedData];
+                if ($scope.stops[mappedData.stopId]) {
+                    $scope.stops[mappedData.stopId].push(mappedData);
+                } else {
+                    $scope.stops[mappedData.stopId] = [mappedData];
                 }
               }
               $scope.stops = $scope.stops.filter(value => Object.keys(value).length !== 0);
